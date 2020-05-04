@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ECE 597 - TFM</string>
+    <string name="sign_out_button">Sign Out</string>
+</resources>
