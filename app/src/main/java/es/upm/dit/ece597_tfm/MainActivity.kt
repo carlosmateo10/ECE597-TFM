@@ -11,28 +11,26 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
-    lateinit var mGoogleSignInClient: GoogleSignInClient
-    lateinit var mGoogleSignInOptions: GoogleSignInOptions
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val signOutButton = findViewById<Button>(R.id.sign_out_button)
+        val toListButton = findViewById<Button>(R.id.list_button)
 
-        signOutButton.setOnClickListener {
-            signOut()
-        }
+        signOutButton.setOnClickListener { signOut()}
+        toListButton.setOnClickListener { startActivity(Intent(this, ListActivity::class.java))}
     }
 
     private fun signOut() {
         startActivity(Intent(this, LoginActivity::class.java))
         FirebaseAuth.getInstance().signOut()
-        mGoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        var mGoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .requestProfile()
             .build()
-        mGoogleSignInClient = GoogleSignIn.getClient(this, mGoogleSignInOptions)
+        var mGoogleSignInClient = GoogleSignIn.getClient(this, mGoogleSignInOptions)
         mGoogleSignInClient.signOut()
     }
 }
