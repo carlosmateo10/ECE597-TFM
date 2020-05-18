@@ -11,6 +11,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 
 class ListAdapter (options: FirestoreRecyclerOptions<Person?>) : FirestoreRecyclerAdapter<Person?, ListAdapter.ListViewHolder?>(options) {
 
+    var onItemClick: ((Person) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
         val view = LayoutInflater.from(parent!!.context).inflate(R.layout.list_item, parent, false)
 
@@ -33,6 +35,10 @@ class ListAdapter (options: FirestoreRecyclerOptions<Person?>) : FirestoreRecycl
             cameraId = view.findViewById(R.id.camera_id)
             timestamp = view.findViewById(R.id.timestamp)
 
+            itemView.setOnClickListener {
+                onItemClick?.invoke(getItem(adapterPosition))
+            }
         }
+
     }
 }
