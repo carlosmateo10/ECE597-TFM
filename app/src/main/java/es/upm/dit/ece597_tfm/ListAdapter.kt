@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.Timestamp
 
 
 class ListAdapter (options: FirestoreRecyclerOptions<Person?>) : FirestoreRecyclerAdapter<Person?, ListAdapter.ListViewHolder?>(options) {
@@ -14,15 +15,15 @@ class ListAdapter (options: FirestoreRecyclerOptions<Person?>) : FirestoreRecycl
     var onItemClick: ((Person) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        val view = LayoutInflater.from(parent!!.context).inflate(R.layout.list_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
 
         return ListViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int, model: Person) {
-        holder!!.personId.text = model.id
+        holder.personId.text = model.id
         holder.cameraId.text = model.camera
-        holder.timestamp.text = model.timestamp
+        holder.timestamp.text = model.hour.toString()+":"+model.minute.toString()
     }
 
     inner class ListViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
