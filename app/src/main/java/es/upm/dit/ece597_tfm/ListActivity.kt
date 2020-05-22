@@ -1,8 +1,10 @@
 package es.upm.dit.ece597_tfm
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -10,10 +12,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.jem.rubberpicker.RubberRangePicker
-import org.w3c.dom.Text
+import java.lang.StringBuilder
+import java.util.*
 
 
 class ListActivity  : AppCompatActivity() {
@@ -22,9 +26,16 @@ class ListActivity  : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
+        // Get current date
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+
         //Initialize Firebase app
         var firestoreDB = FirebaseFirestore.getInstance()
-        var query: Query = firestoreDB.collection("people")
+        Log.d("QUERY", (month+1).toString()+"-"+day+"-"+year)
+        var query: Query = firestoreDB.collection("data").document("people").collection((month+1).toString()+"-"+day+"-"+year)
 
         loadRecyclerView(query)
 
@@ -33,6 +44,9 @@ class ListActivity  : AppCompatActivity() {
         val timePicker = findViewById<RubberRangePicker>(R.id.time_picker)
         val minTime= findViewById<TextView>(R.id.min_time)
         val maxTime= findViewById<TextView>(R.id.max_time)
+        val date= findViewById<TextView>(R.id.date)
+
+        date.text = (month+1).toString()+"-"+day+"-"+year
 
         timePicker.setMin(0)
         timePicker.setMax(24)
@@ -56,15 +70,21 @@ class ListActivity  : AppCompatActivity() {
         })
 
         searchButton.setOnClickListener {
-            var query: Query = firestoreDB.collection("people")
+            var query: Query = firestoreDB.collection("data").document("people").collection(date.text.toString())
             Log.d("ListActivity", cameraNumber.text.toString())
             if(cameraNumber.text.isNotEmpty()) query = query.whereEqualTo("camera", cameraNumber.text.toString())
             query = query.whereGreaterThanOrEqualTo("hour", timePicker.getCurrentStartValue())
             query = query.whereLessThanOrEqualTo("hour", timePicker.getCurrentEndValue())
+
             loadRecyclerView(query)
         }
 
-
+        date.setOnClickListener {
+            val datePickerDialog = DatePickerDialog(this, DatePickerDialog.OnDateSetListener{ _, year, month, dayOfMonth ->
+                date.text = (month+1).toString()+"-"+dayOfMonth.toString()+"-"+year
+            }, year, month,day)
+            datePickerDialog.show()
+        }
 
     }
 
@@ -89,4 +109,6 @@ class ListActivity  : AppCompatActivity() {
         }
         recyclerView.setAdapter(adapter)
     }
+
+
 }
