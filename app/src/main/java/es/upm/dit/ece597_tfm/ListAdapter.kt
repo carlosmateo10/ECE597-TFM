@@ -21,7 +21,7 @@ class ListAdapter (options: FirestoreRecyclerOptions<Person?>) : FirestoreRecycl
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int, model: Person) {
-        holder.personId.text = model.id
+        holder.personId.text = "ID: "+model.id
         holder.cameraId.text = model.camera
         holder.timestamp.text = model.hour.toString()+":"+model.minute.toString()
     }

@@ -74,7 +74,7 @@ class ListActivity  : AppCompatActivity() {
             Log.d("ListActivity", cameraNumber.text.toString())
             if(cameraNumber.text.isNotEmpty()) query = query.whereEqualTo("camera", cameraNumber.text.toString())
             query = query.whereGreaterThanOrEqualTo("hour", timePicker.getCurrentStartValue())
-            query = query.whereLessThanOrEqualTo("hour", timePicker.getCurrentEndValue())
+            query = query.whereLessThanOrEqualTo("hour", timePicker.getCurrentEndValue()).orderBy("hour", Query.Direction.DESCENDING).orderBy("minute", Query.Direction.DESCENDING)
 
             loadRecyclerView(query)
         }
