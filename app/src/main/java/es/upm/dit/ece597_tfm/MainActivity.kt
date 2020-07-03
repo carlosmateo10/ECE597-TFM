@@ -18,9 +18,11 @@ class MainActivity : AppCompatActivity() {
         val signOutButton = findViewById<Button>(R.id.sign_out_button)
         val toListButton = findViewById<Button>(R.id.list_button)
         val toSettingsButton = findViewById<Button>(R.id.settings_button)
+        val toReportsButton = findViewById<Button>(R.id.reports_button)
 
         signOutButton.setOnClickListener { signOut()}
         toListButton.setOnClickListener { startActivity(Intent(this, ListActivity::class.java))}
+        toReportsButton.setOnClickListener { startActivity(Intent(this, ReportsActivity::class.java))}
         toSettingsButton.setOnClickListener { startActivity(Intent(this, SettingsActivity::class.java))}
     }
 

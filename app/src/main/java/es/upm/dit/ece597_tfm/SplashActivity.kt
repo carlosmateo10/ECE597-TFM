@@ -17,7 +17,7 @@ class SplashActivity : AppCompatActivity() {
         val background = object : Thread() {
             override fun run() {
                 try {
-                    Thread.sleep(2500)
+                    Thread.sleep(100)
 
                     // Check for existing Google Sign In account, if the user is already signed in
                     // the GoogleSignInAccount will be non-null.

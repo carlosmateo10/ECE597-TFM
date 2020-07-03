@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="reports">
+        <item>@string/report1</item>
+        <item>@string/report2</item>
+        <item>@string/report3</item>
+    </string-array>
+
+    <string name="report1">Cameras</string>
+    <string name="report2">Time</string>
+    <string name="report3">People</string>
+
+</resources>

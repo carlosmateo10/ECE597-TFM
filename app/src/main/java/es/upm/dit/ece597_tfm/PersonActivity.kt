@@ -3,13 +3,13 @@ package es.upm.dit.ece597_tfm
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.jem.rubberpicker.RubberRangePicker
@@ -17,11 +17,16 @@ import java.util.*
 
 class PersonActivity : AppCompatActivity() {
 
-    //var recyclerView: RecyclerView? = null
+    var firestoreDB = FirebaseFirestore.getInstance()
+    var userID: String? = FirebaseAuth.getInstance().currentUser?.uid
+    lateinit var spinnerBlueprints: Spinner
+    lateinit var timePicker: RubberRangePicker
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_person)
+
+        timePicker = findViewById<RubberRangePicker>(R.id.time_picker)
 
         // Get current date
         val c = Calendar.getInstance()
@@ -37,10 +42,12 @@ class PersonActivity : AppCompatActivity() {
         val query: Query = firestoreDB.collection("data").document("people").collection((month+1).toString()+"-"+day+"-"+year).whereEqualTo("id", personID)
 
         loadRecyclerView(query)
+        addSpinnerContent()
 
+        spinnerBlueprints = findViewById<Spinner>(R.id.spinner_blueprints_person)
         val searchButton = findViewById<Button>(R.id.search_button)
         val cameraNumber = findViewById<EditText>(R.id.camera_number)
-        val timePicker = findViewById<RubberRangePicker>(R.id.time_picker)
+        timePicker = findViewById<RubberRangePicker>(R.id.time_picker)
         val minTime= findViewById<TextView>(R.id.min_time)
         val maxTime= findViewById<TextView>(R.id.max_time)
         val date= findViewById<TextView>(R.id.date)
@@ -72,11 +79,10 @@ class PersonActivity : AppCompatActivity() {
 
         searchButton.setOnClickListener {
             var query: Query = firestoreDB.collection("data").document("people").collection(date.text.toString()).whereEqualTo("id", personID)
-            Log.d("PersonActivity", cameraNumber.text.toString())
+            if(spinnerBlueprints.selectedItemPosition != 0) query = firestoreDB.collection("data").document("people").collection(date.text.toString()).document("area").collection(spinnerBlueprints.selectedItem.toString()).whereEqualTo("id", personID)
+
             if(cameraNumber.text.isNotEmpty()) query = query.whereEqualTo("camera", cameraNumber.text.toString())
-            query = query.whereGreaterThanOrEqualTo("hour", timePicker.getCurrentStartValue())
-            query = query.whereLessThanOrEqualTo("hour", timePicker.getCurrentEndValue()).orderBy("hour", Query.Direction.DESCENDING)
-                //.orderBy("minute", Query.Direction.DESCENDING)
+            query = query.orderBy(FieldPath.documentId())
 
             loadRecyclerView(query)
         }
@@ -101,6 +107,27 @@ class PersonActivity : AppCompatActivity() {
             .build()
         val adapter = ListAdapter(options)
 
+        adapter.minHour = timePicker.getCurrentStartValue()
+        adapter.maxHour = timePicker.getCurrentEndValue()
+
         recyclerView.setAdapter(adapter)
+    }
+
+    fun addSpinnerContent() {
+        val arrayList: ArrayList<String?> = ArrayList()
+        arrayList.add("ALL")
+        firestoreDB?.collection("users")?.document(userID!!)?.collection("blueprints")
+            ?.get()
+            ?.addOnCompleteListener {
+                for (document in it.result?.documents!!) {
+                    Log.d("Blueprints", "${document.id} => ${document.data}")
+                    arrayList.add(document.get("name") as String?)
+
+                }
+                val arrayAdapter: ArrayAdapter<String?> = ArrayAdapter<String?>(this, android.R.layout.simple_spinner_item, arrayList)
+                arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                spinnerBlueprints?.setAdapter(arrayAdapter)
+                spinnerBlueprints?.setSelection(0)
+            }
     }
 }

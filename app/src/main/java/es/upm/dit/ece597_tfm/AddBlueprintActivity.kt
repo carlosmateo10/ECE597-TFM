@@ -53,6 +53,9 @@ class AddBlueprintActivity : AppCompatActivity() {
                         .addOnSuccessListener {
                             Toast.makeText(this, "OK", Toast.LENGTH_SHORT).show()
                         }
+
+                    firestoreDB.collection("users").document(userID!!)
+                        .set( hashMapOf("userID" to userID))
                 }
             } else {
                 Toast.makeText(this, "Please, first select the image of the blueprint", Toast.LENGTH_SHORT).show()

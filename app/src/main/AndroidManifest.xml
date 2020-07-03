@@ -23,6 +23,7 @@
         <activity android:name=".SettingsActivity" />
         <activity android:name=".AddBlueprintActivity" />
         <activity android:name=".ManageBlueprintActivity" />
+        <activity android:name=".ReportsActivity" />
     </application>
 
 </manifest>

@@ -40,7 +40,6 @@ class ManageBlueprintActivity: AppCompatActivity() {
 
         addSpinnerContent()
 
-
         camera_image.setOnLongClickListener {
             val data: ClipData = ClipData.newPlainText("id", camera_select_id.text)
             val shadowBuilder = DragShadowBuilder(it)
@@ -246,8 +245,8 @@ class ManageBlueprintActivity: AppCompatActivity() {
                         var newView: View? = layoutInflater.inflate(R.layout.camera_layout, null, false)
 
                         blueprintLayout.addView(newView)
-                        newView!!.x = auxCoordinates[0].toFloat()
-                        newView.y = auxCoordinates[1].toFloat()
+                        newView!!.x = auxCoordinates[0].toFloat()-65
+                        newView.y = auxCoordinates[1].toFloat()-65
                         newView.findViewById<TextView>(R.id.camera_id).text = camera
 
                         newView.setOnLongClickListener {
