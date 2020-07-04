@@ -81,9 +81,9 @@ class ManageBlueprintActivity: AppCompatActivity() {
                         var newView: View? = layoutInflater.inflate(R.layout.camera_layout, null, false)
 
                         blueprintLayout.addView(newView)
-                        println("HEIGHT: "+blueprint_image.height)
-                        newView!!.x = event.x-65
-                        newView.y = event.y-65
+                        println("HEIGHT: "+blueprintLayout.height)
+                        newView!!.x = event.x
+                        newView.y = event.y
                         newView.findViewById<TextView>(R.id.camera_id).text = dragData
 
                         newView.setOnLongClickListener {
@@ -245,8 +245,8 @@ class ManageBlueprintActivity: AppCompatActivity() {
                         var newView: View? = layoutInflater.inflate(R.layout.camera_layout, null, false)
 
                         blueprintLayout.addView(newView)
-                        newView!!.x = auxCoordinates[0].toFloat()-65
-                        newView.y = auxCoordinates[1].toFloat()-65
+                        newView!!.x = auxCoordinates[0].toFloat()
+                        newView.y = auxCoordinates[1].toFloat()
                         newView.findViewById<TextView>(R.id.camera_id).text = camera
 
                         newView.setOnLongClickListener {

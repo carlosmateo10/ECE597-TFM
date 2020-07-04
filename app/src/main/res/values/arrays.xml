@@ -5,10 +5,12 @@
         <item>@string/report1</item>
         <item>@string/report2</item>
         <item>@string/report3</item>
+        <item>@string/report4</item>
     </string-array>
 
     <string name="report1">Cameras</string>
     <string name="report2">Time</string>
     <string name="report3">People</string>
+    <string name="report4">Map</string>
 
 </resources>
