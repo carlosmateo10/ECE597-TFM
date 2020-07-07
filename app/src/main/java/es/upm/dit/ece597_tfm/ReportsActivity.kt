@@ -2,6 +2,7 @@ package es.upm.dit.ece597_tfm
 
 import android.app.DatePickerDialog
 import android.content.ClipData
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,6 +10,9 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.alpha
+import androidx.core.graphics.drawable.toDrawable
+import androidx.core.graphics.toColorLong
 import co.csadev.kellocharts.listener.ColumnChartOnValueSelectListener
 import co.csadev.kellocharts.model.*
 import co.csadev.kellocharts.util.ChartUtils
@@ -393,9 +397,11 @@ class ReportsActivity: AppCompatActivity() {
                         for ((cameraID, detections) in document) {
                             if(cameraID == camera) {
                                 val value = BubbleValue(x, y, (detections as Long).toFloat() * 100)
-                                value.color = ChartUtils.pickColor()
+                                var color = Color.parseColor("#7F33B5E5")
+                                value.color = color
                                 value.shape = ValueShape.CIRCLE
                                 value.label = "Camera ${cameraID} - ${detections} Detections".toCharArray()
+
                                 values.add(value)
                             }
                         }
@@ -410,12 +416,13 @@ class ReportsActivity: AppCompatActivity() {
 
                     newData.axisXBottom = axisX
                     newData.axisYLeft = null
-                    /*newData.axisXBottom = null
-                    newData.axisYLeft = null*/
 
                     bubble?.bubbleChartData = newData
                     bubble.bringToFront()
                     bubble.isZoomEnabled = false
+
+                    blueprintImage.visibility = GONE
+                    bubble.background = blueprintImage.drawable
 
                     bubble.alpha = 0.5F
                 }
