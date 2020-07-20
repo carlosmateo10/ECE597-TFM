@@ -81,7 +81,7 @@ class ManageBlueprintActivity: AppCompatActivity() {
                         var newView: View? = layoutInflater.inflate(R.layout.camera_layout, null, false)
 
                         blueprintLayout.addView(newView)
-                        println("HEIGHT: "+blueprintLayout.height)
+                        println("HEIGHT: "+blueprintLayout.height + " WIDTH: " +blueprintLayout.width)
                         newView!!.x = event.x
                         newView.y = event.y
                         newView.findViewById<TextView>(R.id.camera_id).text = dragData

@@ -68,13 +68,13 @@ class ReportsActivity: AppCompatActivity() {
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if(position == 3) {
-                    setReport(7, 1, "")
+                    setReport(7, "")
                     bubble.visibility = VISIBLE
                     blueprintImage.visibility = VISIBLE
                     chart.visibility = GONE
                     chart2.visibility = GONE
                 } else {
-                    setReport(position+1, 1, "")
+                    setReport(position+1, "")
                     blueprintImage.visibility = GONE
                     bubble.visibility = GONE
                     chart.visibility = VISIBLE
@@ -95,9 +95,9 @@ class ReportsActivity: AppCompatActivity() {
         val reportBtn = findViewById<Button>(R.id.reload_button)
         reportBtn.setOnClickListener {
             if(spinner.selectedItemPosition == 3){
-                setReport(7,1,"")
+                setReport(7,"")
             } else {
-                setReport(spinner.selectedItemPosition+1, 1, "")
+                setReport(spinner.selectedItemPosition+1, "")
 
             }
         }
@@ -129,7 +129,7 @@ class ReportsActivity: AppCompatActivity() {
 
     }
 
-    private fun report1(document: Map<String, Any>, chartN: Int) {
+    private fun report1(document: Map<String, Any>) {
         val numColumns = document.size
         // Column can have many subcolumns, here by default I use 1 subcolumn in each of 8 columns.
         val columns = ArrayList<Column>()
@@ -167,7 +167,7 @@ class ReportsActivity: AppCompatActivity() {
         chart2?.visibility = GONE
     }
 
-    private fun report2(document: Map<String, Any>, chartN: Int) {
+    private fun report2(document: Map<String, Any>) {
         val numColumns = 24
         // Column can have many subcolumns, here by default I use 1 subcolumn in each of 8 columns.
         val columns = ArrayList<Column>()
@@ -201,7 +201,7 @@ class ReportsActivity: AppCompatActivity() {
         chart2?.visibility = GONE
     }
 
-    private fun report3(document: Map<String, Any>, chartN: Int) {
+    private fun report3(document: Map<String, Any>) {
 
         val numColumns = document.size
         // Column can have many subcolumns, here by default I use 1 subcolumn in each of 8 columns.
@@ -240,7 +240,7 @@ class ReportsActivity: AppCompatActivity() {
         chart2?.visibility = GONE
     }
 
-    private fun report4(document: Map<String, Any>, chartN: Int, id: String) {
+    private fun report4(document: Map<String, Any>, id: String) {
 
         var document2: Map<String, Any> = document.get(id) as Map<String, Any>
 
@@ -278,7 +278,7 @@ class ReportsActivity: AppCompatActivity() {
 
     }
 
-    private fun report5(document: Map<String, Any>, chartN: Int, id: String) {
+    private fun report5(document: Map<String, Any>, id: String) {
 
         var document2: Map<String, Any> = document.get(id) as Map<String, Any>
 
@@ -320,7 +320,7 @@ class ReportsActivity: AppCompatActivity() {
 
     }
 
-    private fun report6(document: Map<String, Any>, chartN: Int, id: String) {
+    private fun report6(document: Map<String, Any>, id: String) {
 
         var document2: Map<String, Any> = document.get(id) as Map<String, Any>
 
@@ -435,15 +435,15 @@ class ReportsActivity: AppCompatActivity() {
 
             when (spinner.selectedItemPosition+1) {
                 1 -> {
-                    setReport(4, 2, String(chart.columnChartData.axisXBottom!!.values[columnIndex].label!!))
+                    setReport(4, String(chart.columnChartData.axisXBottom!!.values[columnIndex].label!!))
                     Toast.makeText(baseContext, "Selected Camera: " + String(chart.columnChartData.axisXBottom!!.values[columnIndex].label!!), Toast.LENGTH_SHORT).show()
                 }
                 3 -> {
                     if(radioButtonCamera.isChecked) {
-                        setReport(5, 2, String(chart.columnChartData.axisXBottom!!.values[columnIndex].label!!))
+                        setReport(5, String(chart.columnChartData.axisXBottom!!.values[columnIndex].label!!))
                         Toast.makeText(baseContext, "Selected Person: " + String(chart.columnChartData.axisXBottom!!.values[columnIndex].label!!), Toast.LENGTH_SHORT).show()
                     } else if (radioButtonTime.isChecked){
-                        setReport(6, 2, String(chart.columnChartData.axisXBottom!!.values[columnIndex].label!!))
+                        setReport(6, String(chart.columnChartData.axisXBottom!!.values[columnIndex].label!!))
                         Toast.makeText(baseContext, "Selected Person: " + String(chart.columnChartData.axisXBottom!!.values[columnIndex].label!!), Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -454,7 +454,7 @@ class ReportsActivity: AppCompatActivity() {
 
     }
 
-    fun setReport(report: Int, chartN: Int, id: String) {
+    fun setReport(report: Int, id: String) {
         var reportDocument = "report" + report
         if (spinnerBlueprints.selectedItem == null) spinnerBlueprints.setSelection(0)
         if (spinnerBlueprints.selectedItemPosition == 0 && report < 7) {
@@ -465,12 +465,12 @@ class ReportsActivity: AppCompatActivity() {
                     if (document.exists()) {
                         Log.d("ReportsActivity", "DocumentSnapshot data: ${document.data}")
                         when (report) {
-                            1 -> report1(document.data as Map<String, Any>, chartN)
-                            2 -> report2(document.data as Map<String, Any>, chartN)
-                            3 -> report3(document.data as Map<String, Any>, chartN)
-                            4 -> report4(document.data as Map<String, Any>, chartN, id)
-                            5 -> report5(document.data as Map<String, Any>, chartN, id)
-                            6 -> report6(document.data as Map<String, Any>, chartN, id)
+                            1 -> report1(document.data as Map<String, Any>)
+                            2 -> report2(document.data as Map<String, Any>)
+                            3 -> report3(document.data as Map<String, Any>)
+                            4 -> report4(document.data as Map<String, Any>, id)
+                            5 -> report5(document.data as Map<String, Any>, id)
+                            6 -> report6(document.data as Map<String, Any>, id)
                         }
                     } else {
                         Log.d("ReportsActivity", "No such document")
@@ -485,12 +485,12 @@ class ReportsActivity: AppCompatActivity() {
                     if (document.exists()) {
                         Log.d("ReportsActivity", "${reportDocument}: DocumentSnapshot data: ${document.data}")
                         when (report) {
-                            1 -> report1(document.data as Map<String, Any>, chartN)
-                            2 -> report2(document.data as Map<String, Any>, chartN)
-                            3 -> report3(document.data as Map<String, Any>, chartN)
-                            4 -> report4(document.data as Map<String, Any>, chartN, id)
-                            5 -> report5(document.data as Map<String, Any>, chartN, id)
-                            6 -> report6(document.data as Map<String, Any>, chartN, id)
+                            1 -> report1(document.data as Map<String, Any>)
+                            2 -> report2(document.data as Map<String, Any>)
+                            3 -> report3(document.data as Map<String, Any>)
+                            4 -> report4(document.data as Map<String, Any>, id)
+                            5 -> report5(document.data as Map<String, Any>, id)
+                            6 -> report6(document.data as Map<String, Any>, id)
                             7 -> report7(document.data as Map<String, Any>)
                         }
                     } else {
